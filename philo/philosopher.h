@@ -33,39 +33,44 @@
 
 typedef unsigned char	t_boolean;
 
+typedef struct s_table t_table;
+
 typedef struct s_philo
 {
 	pthread_t	thread;
 	int			id;
 	t_boolean	eating;
+	t_boolean	is_alive;
 	t_boolean	meals_eaten;
-	t_boolean	can_start;
 	size_t		last_meal;
+	t_table		*table;
 }	t_philo;
 
 typedef struct s_table
 {
+	t_boolean		can_start;
 	int				number_philosopers;
-	int				time_sleep;
-	int				time_to_die;
-	int				time_eat;
-	int				nb_of_eat_philo;
+	size_t			time_sleep;
+	size_t			time_to_die;
+	size_t			time_eat;
+	size_t			time;
+	size_t			nb_of_eat_philo;
 	t_boolean		has_died;
 	t_philo			*philoshophers;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	**forks;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*meal_lock;
 }	t_table;
 
 //Initialize
 t_table		*create_table(int argc, char **argv);
-void 		create_philosophers(t_table *table);
+void		create_philosophers(t_table *table);
 //Utils
 
-long long	get_time(void);
+size_t		get_time(t_table *table);
 char		*get_text_color(int id);
 int			ft_atoi(const char *str);
-
+void		philo_msg(t_philo *philo, char *str);
 //Memory managemment
 
 void		free_table(t_table *table);

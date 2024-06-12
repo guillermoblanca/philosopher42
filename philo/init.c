@@ -20,6 +20,27 @@ static void	check_nb_philosophers(t_table *table)
 	exit(EXIT_FAILURE);
 }
 
+static int	create_forks(t_table *table)
+{
+	int				index;
+	pthread_mutex_t	*tmp;
+
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->number_philosopers);
+	if (!table->forks)
+		return (FALSE);
+	index = 0;
+	while (index < table->number_philosopers)
+	{
+		tmp = malloc(sizeof(pthread_mutex_t));
+		if (!tmp)
+			return (FALSE);
+		pthread_mutex_init(tmp, NULL);
+		table->forks[index] = tmp;
+		index++;
+	}
+	return (TRUE);
+}
+
 void	free_table(t_table *table)
 {
 	free(table);
@@ -47,8 +68,11 @@ t_table	*create_table(int argc, char **argv)
 	table->write_lock = NULL;
 	table->meal_lock = NULL;
 	table->has_died = FALSE;
+	table->can_start = FALSE;
+	table->time = 0;
 	if (argc == 6)
 		table->nb_of_eat_philo = ft_atoi(argv[5]);
 	create_philosophers(table);
+	create_forks(table);
 	return (table);
 }

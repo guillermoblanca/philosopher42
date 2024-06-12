@@ -12,13 +12,15 @@
 
 #include "philosopher.h"
 
-long long	get_time(void)
+size_t	get_time(t_table *table)
 {
-	long long		ms;
+	size_t			ms;
 	struct timeval	timer;
 
 	gettimeofday(&timer, NULL);
 	ms = (timer.tv_sec * 1000LL) + (timer.tv_usec / 1000LL);
+	if (table)
+		return (ms - table->time);
 	return (ms);
 }
 
@@ -41,4 +43,10 @@ char	*get_text_color(int id)
 	if (id == 7)
 		return (CYAN);
 	return ("");
+}
+
+void	philo_msg(t_philo *philo, char *str)
+{
+	printf("%s[%zu]MS %sPHILO:[%d] %s%s\n",GREEN,
+		get_time(philo->table), get_text_color(philo->id), philo->id, str, RESET);
 }

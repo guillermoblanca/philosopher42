@@ -1,2 +1,11 @@
 
 //Plantear comportamiento y join de los threads
+//gestionar si el numero de comidas es 0 
+//la gestion del tiempo debe ser un contador de tiempo que vaya incrementandose junto con el paso de la aplicación 
+
+//deberia gestionar el limite de long long? cuanto es este valor?
+
+
+create forks devuelve error si es false
+en caso de que fallo un malloc debo controlar la liberacion de todos los forks
+//creacion de los mutex

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gblanca- <gblanca-@student.42.fr>          #+#  +:+       +#+        */
+/*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-06 12:19:02 by gblanca-          #+#    #+#             */
-/*   Updated: 2024-06-06 12:19:02 by gblanca-         ###   ########.fr       */
+/*   Created: 2024/06/06 12:19:02 by gblanca-          #+#    #+#             */
+/*   Updated: 2024/06/18 16:27:56 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ static void	print_table(t_table *table)
 	printf("Table eat per filo:%s%zu%s\n",
 		GREEN, table->nb_of_eat_philo, RESET);
 }
-
+static void print_help(void)
+{
+	printf("1. Number of philosophers\n");
+	printf("2. time to die\n");
+	printf("3. time to eat\n");
+	printf("4. time to sleep\n");
+	printf("5. [OPTIONAL] \n");
+}
 int	main(int argc, char **argv)
 {
 	t_table		*table;
@@ -38,10 +45,11 @@ int	main(int argc, char **argv)
 	long long	end;
 
 	table = malloc(sizeof(t_table));
-	start = get_time(table);
+	start = get_time();
 	if (argc < 4 || argc > 6)
 	{
 		printf("%sERROR: Parameters are incorrect%s\n",RED, RESET);
+		print_help();
 		return (EXIT_FAILURE);
 	}
 	else
@@ -50,11 +58,10 @@ int	main(int argc, char **argv)
 		print_table(table);
 		table->can_start = TRUE;
 	}
-	end = get_time(table);
+	end = get_time();
 	printf("TIME: %s%lld%s \n", GREEN, (end - start), RESET);
-	while (table->has_died == FALSE)
+	while (table->simulation_active == TRUE)
 	{
-
 	}
 	return (EXIT_SUCCESS);
 }

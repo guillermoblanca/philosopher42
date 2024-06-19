@@ -3,33 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gblanca- <gblanca-@student.42.fr>          #+#  +:+       +#+        */
+/*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-06 14:06:47 by gblanca-          #+#    #+#             */
-/*   Updated: 2024-06-06 14:06:47 by gblanca-         ###   ########.fr       */
+/*   Created: 2024/06/06 14:06:47 by gblanca-          #+#    #+#             */
+/*   Updated: 2024/06/18 11:46:03 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
-
-size_t	get_time(t_table *table)
-{
-	size_t			ms;
-	struct timeval	timer;
-
-	gettimeofday(&timer, NULL);
-	ms = (timer.tv_sec * 1000LL) + (timer.tv_usec / 1000LL);
-	if (table)
-		return (ms - table->time);
-	return (ms);
-}
 
 char	*get_text_color(int id)
 {
 	if (id == 0)
 		return (WHITE);
 	if (id == 1)
-		return (BLACK);
+		return (GRAY);
 	if (id == 2)
 		return (RED);
 	if (id == 3)
@@ -47,6 +35,12 @@ char	*get_text_color(int id)
 
 void	philo_msg(t_philo *philo, char *str)
 {
-	printf("%s[%zu]MS %sPHILO:[%d] %s%s\n",GREEN,
-		get_time(philo->table), get_text_color(philo->id), philo->id, str, RESET);
+	printf("%s[%zu] ms %sphilo %d %s%s\n", GREEN,
+		get_current_time(philo->table), get_text_color(philo->id),
+		philo->id, str, RESET);
+}
+
+size_t	to_microseconds(size_t ms)
+{
+	return (ms * 1000);
 }

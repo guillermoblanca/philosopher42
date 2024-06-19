@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gblanca- <gblanca-@student.42.fr>          #+#  +:+       +#+        */
+/*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-06 12:55:17 by gblanca-          #+#    #+#             */
-/*   Updated: 2024-06-06 12:55:17 by gblanca-         ###   ########.fr       */
+/*   Created: 2024/06/06 12:55:17 by gblanca-          #+#    #+#             */
+/*   Updated: 2024/06/18 14:35:59 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define BLACK "\x1B[30m"
+//COLORS
+
+# define GRAY "\x1b[90m"
 # define RED "\x1B[31m"
 # define GREEN "\x1B[32m"
 # define YELLOW "\x1B[33m"
@@ -31,19 +33,31 @@
 # define FALSE 0
 # define COLOR_LEN 8
 
+//MESSAGES
+
+# define SLEEP_MSG "is sleeping"
+# define LFORK_MSG "has taken left fork"
+# define RFORK_MSG "has taken rigth fork"
+# define EAT_MSG "is eating"
+# define THINK_MSG "is thinking"
+# define SLEEP_MSG "is sleeping"
+# define DIE_MSG "has died"
+
 typedef unsigned char	t_boolean;
 
-typedef struct s_table t_table;
+typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
-	pthread_t	thread;
-	int			id;
-	t_boolean	eating;
-	t_boolean	is_alive;
-	t_boolean	meals_eaten;
-	size_t		last_meal;
-	t_table		*table;
+	pthread_t		thread;
+	int				id;
+	size_t			next_meal;
+	size_t			time_to_die;
+	t_boolean		eating;
+	t_boolean		is_alive;
+	t_boolean		meals_eaten;
+	pthread_mutex_t	*death;
+	t_table			*table;
 }	t_philo;
 
 typedef struct s_table
@@ -55,8 +69,9 @@ typedef struct s_table
 	size_t			time_eat;
 	size_t			time;
 	size_t			nb_of_eat_philo;
-	t_boolean		has_died;
+	t_boolean		simulation_active;
 	t_philo			*philoshophers;
+	pthread_t		monitor_thread;
 	pthread_mutex_t	**forks;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*meal_lock;
@@ -65,12 +80,21 @@ typedef struct s_table
 //Initialize
 t_table		*create_table(int argc, char **argv);
 void		create_philosophers(t_table *table);
+void		create_monitor(t_table *table);
+//Time
+size_t		get_time(void);
+size_t		get_next_meal(t_table *table);
+size_t		get_next_die(t_table *table);
+size_t		get_current_time(t_table *table);
 //Utils
-
-size_t		get_time(t_table *table);
 char		*get_text_color(int id);
 int			ft_atoi(const char *str);
 void		philo_msg(t_philo *philo, char *str);
+size_t		to_microseconds(size_t ms);
+
+//philosopher behaviour
+t_boolean	can_eat(t_philo *philo);
+void		eat_behaviour(t_philo *philo);
 //Memory managemment
 
 void		free_table(t_table *table);

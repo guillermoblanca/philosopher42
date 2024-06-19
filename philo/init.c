@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gblanca- <gblanca-@student.42.fr>          #+#  +:+       +#+        */
+/*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024-06-07 10:51:09 by gblanca-         ###   ########.fr       */
+/*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
+/*   Updated: 2024/06/18 16:09:47 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	check_nb_philosophers(t_table *table)
 {
-	printf("%sError: philosophers requires to be between 1-200%s\n"
-		, RED, RESET);
+	printf("%sError: philosophers requires to be between 1-200%s\n",
+		RED, RESET);
 	free_table(table);
 	exit(EXIT_FAILURE);
 }
@@ -46,6 +46,21 @@ void	free_table(t_table *table)
 	free(table);
 }
 
+static void	create_mutex(t_table *table)
+{
+	table->write_lock = malloc(sizeof(pthread_mutex_t));
+	if (!table->write_lock)
+		free_table(table);
+	table->meal_lock = malloc(sizeof(pthread_mutex_t));
+	if (!table->meal_lock)
+	{
+		free(table->write_lock);
+		free_table(table);
+	}
+	pthread_mutex_init(table->write_lock, NULL);
+	pthread_mutex_init(table->meal_lock, NULL);
+}
+
 t_table	*create_table(int argc, char **argv)
 {
 	t_table	*table;
@@ -67,12 +82,14 @@ t_table	*create_table(int argc, char **argv)
 	table->forks = NULL;
 	table->write_lock = NULL;
 	table->meal_lock = NULL;
-	table->has_died = FALSE;
+	table->simulation_active = TRUE;
 	table->can_start = FALSE;
-	table->time = 0;
+	table->time = get_time();
 	if (argc == 6)
 		table->nb_of_eat_philo = ft_atoi(argv[5]);
+	create_mutex(table);
 	create_philosophers(table);
 	create_forks(table);
+	create_monitor(table);
 	return (table);
 }

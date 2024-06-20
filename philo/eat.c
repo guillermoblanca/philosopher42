@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:21:05 by gblanca           #+#    #+#             */
-/*   Updated: 2024/06/18 16:32:04 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:08:35 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_boolean	can_eat(t_philo *philo)
 	return (FALSE);
 }
 
-static void get_forks(t_philo *philo)
+static void	get_forks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->forks[philo->id]);
 	philo_msg(philo, LFORK_MSG);
@@ -42,12 +42,11 @@ void	eat_behaviour(t_philo *philo)
 		if (is_philo_death(philo) == TRUE)
 		{
 			philo_msg(philo, DIE_MSG);
-			philo->is_alive = FALSE;
-			break;
+			set_alive_state(philo, FALSE);
+			break ;
 		}
 		usleep(1);
 	}
-	//usleep(to_microseconds(philo->table->time_eat)); //sustituir por un checker para comprobar si ha muerto
 	philo->eating = FALSE;
 	philo->time_eating = get_eating_time(philo->table);
 	philo->time_to_die = get_next_die(philo->table);

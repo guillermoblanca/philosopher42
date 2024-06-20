@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 07:28:20 by gblanca           #+#    #+#             */
-/*   Updated: 2024/06/18 10:52:41 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:35:23 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ size_t	get_next_die(t_table *table)
 
 size_t	get_current_time(t_table *table)
 {
-	return (get_time() - table->time);
+	return (get_time() - table->start_time);
 }

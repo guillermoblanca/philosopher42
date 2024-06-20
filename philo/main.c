@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:19:02 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/18 16:27:56 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:21:29 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,17 @@ static void	print_table(t_table *table)
 static void print_help(void)
 {
 	printf("1. Number of philosophers\n");
-	printf("2. time to die\n");
-	printf("3. time to eat\n");
-	printf("4. time to sleep\n");
+	printf("2. start_time to die\n");
+	printf("3. start_time to eat\n");
+	printf("4. start_time to sleep\n");
 	printf("5. [OPTIONAL] \n");
 }
 
-static void example(t_table *table, int argc, char **argv)
-{
-	table = create_table(argc, argv);
-	print_table(table);
-	table->can_start = TRUE;
-	while (table->simulation_active == TRUE)
-	{
-	}
-}
 int	main(int argc, char **argv)
 {
 	t_table		*table;
-	size_t	start;
 
 	table = malloc(sizeof(t_table));
-	start = get_time();
 	if (argc < 4 || argc > 6)
 	{
 		printf("%sERROR: Parameters are incorrect%s\n",RED, RESET);
@@ -62,20 +51,19 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	table = create_table(argc, argv);
-	table->can_start = TRUE;
+	set_start(table, TRUE);
 	print_table(table);
-	while (table->simulation_active == TRUE)
+	while (can_continue(table) == TRUE)
 	{
 		int i = 0;
-		while ( i < table->number_philosopers)
+		while (i < table->number_philosopers)
 		{
-			pthread_mutex_lock(table->philoshophers[i].lock);
-			if (table->philoshophers[i].is_alive == FALSE)
+			if (is_philo_death(table->philoshophers) == TRUE)
 			{
-				table->simulation_active = FALSE;
+				set_continue(table, FALSE);
 				printf("NOTIFIED\n");
+				usleep(100);
 			}
-			pthread_mutex_unlock(table->philoshophers[i].lock);
 			i++;
 		}
 	}

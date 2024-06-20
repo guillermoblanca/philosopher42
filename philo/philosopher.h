@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:55:17 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/18 14:35:59 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/20 11:14:16 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_philo
 	int				id;
 	size_t			time_eating;
 	size_t			time_to_die;
+	size_t			time_sleep;
 	t_boolean		eating;
 	t_boolean		is_alive;
 	t_boolean		meals_eaten;
@@ -67,7 +68,7 @@ typedef struct s_table
 	size_t			time_sleep;
 	size_t			time_to_die;
 	size_t			time_eat;
-	size_t			time;
+	size_t			start_time;
 	size_t			nb_of_eat_philo;
 	t_boolean		simulation_active;
 	t_philo			*philoshophers;
@@ -95,9 +96,15 @@ size_t		to_microseconds(size_t ms);
 t_boolean	can_eat(t_philo *philo);
 t_boolean	is_philo_death(t_philo *philo);
 void		eat_behaviour(t_philo *philo);
-
+void		set_alive_state(t_philo *philo, t_boolean state);
 //Memory managemment
 
 void		free_table(t_table *table);
 void		free_philosophers(t_table *table, int failed_philo);
+
+//Manager
+t_boolean	can_start(t_table *table);
+void		set_start(t_table *table, t_boolean state);
+t_boolean	can_continue(t_table *table);
+void		set_continue(t_table *table, t_boolean state);
 #endif

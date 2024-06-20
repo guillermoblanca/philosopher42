@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/18 16:09:47 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/20 10:35:23 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_table	*create_table(int argc, char **argv)
 	table->philoshophers = NULL;
 	table->simulation_active = TRUE;
 	table->can_start = FALSE;
-	table->time = get_time();
+	table->start_time = get_time();
 	if (argc == 6)
 		table->nb_of_eat_philo = ft_atoi(argv[5]);
 	create_mutex(table);

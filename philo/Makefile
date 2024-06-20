@@ -2,7 +2,6 @@ NAME = philo
 
 CC := clang
 FLAGS := -Wall -Wextra -Werror -g -pthread
-FLAGS = -pthread
 RM := rm -f
 ARGS := 5 800 300 200
 

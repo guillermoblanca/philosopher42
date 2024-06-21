@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/20 10:35:23 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 10:51:28 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_table	*create_table(int argc, char **argv)
 	table->time_to_die = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
-	table->nb_of_eat_philo = 1;
+	table->nb_of_eat_philo = 0;
 	table->philoshophers = NULL;
 	table->simulation_active = TRUE;
 	table->can_start = FALSE;
@@ -85,7 +85,7 @@ t_table	*create_table(int argc, char **argv)
 	if (argc == 6)
 		table->nb_of_eat_philo = ft_atoi(argv[5]);
 	create_mutex(table);
-	create_philosophers(table);
 	create_forks(table);
+	create_philosophers(table);
 	return (table);
 }

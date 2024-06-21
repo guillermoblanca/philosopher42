@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:06:47 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/20 11:03:17 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 10:46:27 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	*get_text_color(int id)
 {
+	id = id % 8;
 	if (id == 0)
 		return (WHITE);
 	if (id == 1)
@@ -36,9 +37,9 @@ char	*get_text_color(int id)
 void	philo_msg(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(philo->table->write_lock);
-	printf("%s[%zu] ms %sphilo %d %s%s\n", GREEN,
+	printf("%s[%zu]ms %sphilo %d %s%s\n", GREEN,
 		get_current_time(philo->table), get_text_color(philo->id),
-		philo->id, str, RESET);
+		philo->id + 1, str, RESET);
 	pthread_mutex_unlock(philo->table->write_lock);
 }
 
@@ -47,21 +48,22 @@ t_boolean	is_philo_death(t_philo *philo)
 	t_boolean	result;
 
 	result = FALSE;
-	pthread_mutex_lock(philo->lock);
-	if (get_current_time(philo->table) >= philo->time_to_die || philo->is_alive == FALSE)
+	pthread_mutex_lock(&philo->lock);
+	if (philo->eating == FALSE && get_current_time(philo->table)
+		> philo->time_to_die)
 	{
-		printf("Time for death %zu and time %zu philo %d \n", philo->time_to_die, get_current_time(philo->table), philo->id);
+		philo_msg(philo, DIE_MSG);
 		result = TRUE;
 	}
-	pthread_mutex_unlock(philo->lock);
+	pthread_mutex_unlock(&philo->lock);
 	return (result);
 }
 
 void	set_alive_state(t_philo *philo, t_boolean state)
 {
-	pthread_mutex_lock(philo->lock);
+	pthread_mutex_lock(&philo->lock);
 	philo->is_alive = state;
-	pthread_mutex_unlock(philo->lock);
+	pthread_mutex_unlock(&philo->lock);
 }
 
 t_boolean	can_continue(t_table *table)
@@ -99,8 +101,8 @@ void	set_continue(t_table *table, t_boolean state)
 	pthread_mutex_unlock(table->checker);
 }
 
-
-size_t	to_microseconds(size_t ms)
+void	debug_philo(t_philo *philo)
 {
-	return (ms * 1000);
+	printf("%s[%zu]ms philo:%d time to die:[%zu] is eating [%hhu] nb of meals %d %s\n", get_text_color(philo->id),
+		get_current_time(philo->table), philo->id + 1, philo->time_to_die, philo->eating, philo->meals_eaten, RESET);
 }

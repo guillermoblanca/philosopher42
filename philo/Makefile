@@ -3,7 +3,7 @@ NAME = philo
 CC := clang
 FLAGS := -Wall -Wextra -Werror -g -pthread
 RM := rm -f
-ARGS := 5 800 300 200
+ARGS := 5 1000 300 200 2
 
 HEADER := philosopher.h
 SRC := main.c utils.c ft_atoi.c init.c actions.c error.c time.c eat.c

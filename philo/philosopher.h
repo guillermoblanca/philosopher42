@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:55:17 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 12:19:08 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 13:06:51 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 # define THINK_MSG "is thinking"
 # define SLEEP_MSG "is sleeping"
 # define DIE_MSG "died"
+
+# define ERROR_NBR "Error: philosophers requires to be between 1-200"
+# define ERROR_PRM "ERROR: Parameters are incorrect"
 
 # define DELAY 100
 

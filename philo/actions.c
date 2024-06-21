@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:00:54 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 11:54:01 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 13:11:18 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	*philo_behaviour(void *data)
 	philo = (t_philo *)data;
 	while (can_start(philo->table) == FALSE)
 		usleep(1);
-	if (philo->id % 3 == 0)
+	if (philo->id % 2 == 0)
 		usleep(get_time_think(philo) * 1000);
 	while (can_continue(philo->table) == TRUE)
 	{

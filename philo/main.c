@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:19:02 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 12:55:59 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 13:08:28 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ int	main(int argc, char **argv)
 {
 	t_table		*table;
 
-	if (argc < 4 || argc > 6)
+	if (argc > 6 || argc < 5)
 	{
-		printf("%sERROR: Parameters are incorrect%s\n", RED, RESET);
+		printf("%s%s%s\n", RED, ERROR_PRM, RESET);
 		return (EXIT_FAILURE);
 	}
 	table = create_table(argc, argv);
-	if (!table)
+	if (table == NULL)
 		return (EXIT_FAILURE);
 	set_start(table, TRUE);
 	while (can_continue(table) == TRUE)

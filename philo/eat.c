@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:21:05 by gblanca           #+#    #+#             */
-/*   Updated: 2024/06/21 11:54:05 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:38:57 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	eat_behaviour(t_philo *philo)
 	pthread_mutex_lock(&philo->lock);
 	philo->eating = TRUE;
 	philo->meals_eaten++;
-	philo->time_to_die = get_next_die(philo->table);
 	time = get_eating_time(philo->table);
 	pthread_mutex_unlock(&philo->lock);
 	while (time > get_current_time(philo->table))
@@ -40,6 +39,7 @@ void	eat_behaviour(t_philo *philo)
 		usleep(1);
 	}
 	pthread_mutex_lock(&philo->lock);
+	philo->time_to_die = get_next_die(philo->table);
 	philo->eating = FALSE;
 	pthread_mutex_unlock(&philo->lock);
 	pthread_mutex_unlock(&philo->table->forks[philo->id]);

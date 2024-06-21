@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 13:05:03 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:37:05 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_table(t_table *table)
 	while (i < table->number_philosopers)
 	{
 		p = table->philoshophers[i];
-		pthread_join(p->thread, NULL);
+	//	pthread_join(p->thread, NULL);
 		pthread_mutex_destroy(&p->lock);
 		pthread_mutex_destroy(&table->forks[i]);
 		free(table->philoshophers[i]);

@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:06:47 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 12:20:16 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:37:45 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_boolean	is_philo_death(t_philo *philo)
 
 	result = FALSE;
 	pthread_mutex_lock(&philo->lock);
-	if (philo->eating == FALSE && get_current_time(philo->table)
+	if (get_current_time(philo->table)
 		>= philo->time_to_die)
 	{
 		philo_msg(philo, DIE_MSG);

@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 07:28:20 by gblanca           #+#    #+#             */
-/*   Updated: 2024/06/21 10:57:57 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:38:53 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ long	get_eating_time(t_table *table)
 
 long	get_next_die(t_table *table)
 {
-	return (get_current_time(table) + table->time_to_die + table->time_eat);
+	return (get_current_time(table) + table->time_to_die);
 }
 
 long	get_current_time(t_table *table)

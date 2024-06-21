@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:00:54 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 13:11:18 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 14:39:38 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	create_philo(t_table *table, int id)
 	philo->eating = FALSE;
 	philo->meals_eaten = FALSE;
 	philo->is_alive = TRUE;
-	philo->time_to_die = get_next_die(table) - table->time_eat;
+	philo->time_to_die = get_next_die(table);
 	philo->table = table;
 	if (pthread_create(&thread_id, NULL, philo_behaviour, philo) != 0)
 	{

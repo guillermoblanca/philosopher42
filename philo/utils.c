@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 14:06:47 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 10:46:27 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:20:16 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ char	*get_text_color(int id)
 
 void	philo_msg(t_philo *philo, char *str)
 {
-	pthread_mutex_lock(philo->table->write_lock);
-	printf("%s[%zu]ms %sphilo %d %s%s\n", GREEN,
-		get_current_time(philo->table), get_text_color(philo->id),
-		philo->id + 1, str, RESET);
-	pthread_mutex_unlock(philo->table->write_lock);
+	pthread_mutex_lock(&philo->table->write_lock);
+	pthread_mutex_lock(&philo->table->checker);
+	if (philo->table->simulation_active == TRUE)
+	{
+		printf("%s%zu %s %d %s%s\n", GREEN,
+			get_current_time(philo->table), get_text_color(philo->id),
+			philo->id + 1, str, RESET);
+	}
+	pthread_mutex_unlock(&philo->table->write_lock);
+	pthread_mutex_unlock(&philo->table->checker);
 }
 
 t_boolean	is_philo_death(t_philo *philo)
@@ -50,7 +55,7 @@ t_boolean	is_philo_death(t_philo *philo)
 	result = FALSE;
 	pthread_mutex_lock(&philo->lock);
 	if (philo->eating == FALSE && get_current_time(philo->table)
-		> philo->time_to_die)
+		>= philo->time_to_die)
 	{
 		philo_msg(philo, DIE_MSG);
 		result = TRUE;
@@ -70,9 +75,9 @@ t_boolean	can_continue(t_table *table)
 {
 	t_boolean	result;
 
-	pthread_mutex_lock(table->checker);
+	pthread_mutex_lock(&table->checker);
 	result = table->simulation_active;
-	pthread_mutex_unlock(table->checker);
+	pthread_mutex_unlock(&table->checker);
 	return (result);
 }
 
@@ -80,25 +85,25 @@ t_boolean	can_start(t_table *table)
 {
 	t_boolean	result;
 
-	pthread_mutex_lock(table->checker);
+	pthread_mutex_lock(&table->checker);
 	result = table->can_start;
-	pthread_mutex_unlock(table->checker);
+	pthread_mutex_unlock(&table->checker);
 	return (result);
 }
 
 void	set_start(t_table *table, t_boolean state)
 {
 
-	pthread_mutex_lock(table->checker);
+	pthread_mutex_lock(&table->checker);
 	table->can_start = state;
-	pthread_mutex_unlock(table->checker);
+	pthread_mutex_unlock(&table->checker);
 }
 
 void	set_continue(t_table *table, t_boolean state)
 {
-	pthread_mutex_lock(table->checker);
+	pthread_mutex_lock(&table->checker);
 	table->simulation_active = state;
-	pthread_mutex_unlock(table->checker);
+	pthread_mutex_unlock(&table->checker);
 }
 
 void	debug_philo(t_philo *philo)

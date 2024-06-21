@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:55:17 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 10:56:37 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:19:08 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@
 //MESSAGES
 
 # define SLEEP_MSG "is sleeping"
-# define LFORK_MSG "has taken left fork"
-# define RFORK_MSG "has taken rigth fork"
+# define LFORK_MSG "has taken a fork"
+# define RFORK_MSG "has taken a fork"
 # define EAT_MSG "is eating"
 # define THINK_MSG "is thinking"
 # define SLEEP_MSG "is sleeping"
-# define DIE_MSG "has died"
+# define DIE_MSG "died"
 
 # define DELAY 100
 
@@ -73,8 +73,8 @@ typedef struct s_table
 	t_boolean		simulation_active;
 	t_philo			**philoshophers;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*write_lock; //usado para escribir con el printf
-	pthread_mutex_t	*checker; //se usa para bloquear el acceso a data simulation_active
+	pthread_mutex_t	write_lock; //usado para escribir con el printf
+	pthread_mutex_t	checker; //se usa para bloquear el acceso a data simulation_active
 }	t_table;
 
 //Initialize

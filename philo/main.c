@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 12:19:02 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 10:48:49 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:28:22 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int argc, char **argv)
 {
 	t_table		*table;
 
-	table = malloc(sizeof(t_table));
 	if (argc < 4 || argc > 6)
 	{
 		printf("%sERROR: Parameters are incorrect%s\n", RED, RESET);
@@ -53,7 +52,7 @@ int	main(int argc, char **argv)
 					all_eat++;
 				pthread_mutex_unlock(&table->philoshophers[i]->lock);
 			}
-			usleep(10000);
+			usleep(2500);
 			i++;
 		}
 		if (all_eat == table->number_philosopers)
@@ -63,11 +62,6 @@ int	main(int argc, char **argv)
 		}
 	}
 	printf("Set clean\n");
-	int i = 0;
-		while (i < table->number_philosopers)
-		{
-			pthread_join(table->philoshophers[i]->thread, NULL);
-			i++;
-		}
+	free_table(table);
 	return (EXIT_SUCCESS);
 }

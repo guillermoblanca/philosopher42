@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 14:21:05 by gblanca           #+#    #+#             */
-/*   Updated: 2024/06/21 10:33:42 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 11:54:05 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	eat_behaviour(t_philo *philo)
 	philo->time_to_die = get_next_die(philo->table);
 	time = get_eating_time(philo->table);
 	pthread_mutex_unlock(&philo->lock);
-	while (time >= get_current_time(philo->table))
+	while (time > get_current_time(philo->table))
 	{
 		if (can_continue(philo->table) == FALSE)
 			break ;

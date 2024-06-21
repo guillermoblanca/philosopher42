@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:00:54 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 10:57:31 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 11:54:01 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	sleep_behaviour(t_philo *philo)
 
 	philo_msg(philo, SLEEP_MSG);
 	sleep = get_sleep_time(philo->table);
-	while (sleep >= get_current_time(philo->table))
+	while (sleep > get_current_time(philo->table))
 	{
 		if (is_philo_death(philo) == TRUE)
 		{
@@ -36,7 +36,7 @@ static void	think_behaviour(t_philo *philo)
 
 	philo_msg(philo, THINK_MSG);
 	time_to_think = get_time_think(philo);
-	while (time_to_think >= get_current_time(philo->table))
+	while (time_to_think > get_current_time(philo->table))
 	{
 		if (is_philo_death(philo) == TRUE)
 		{
@@ -55,7 +55,7 @@ static void	*philo_behaviour(void *data)
 	philo = (t_philo *)data;
 	while (can_start(philo->table) == FALSE)
 		usleep(1);
-	if (philo->id % 2 == 0)
+	if (philo->id % 3 == 0)
 		usleep(get_time_think(philo) * 1000);
 	while (can_continue(philo->table) == TRUE)
 	{
@@ -80,7 +80,7 @@ static void	create_philo(t_table *table, int id)
 	philo->eating = FALSE;
 	philo->meals_eaten = FALSE;
 	philo->is_alive = TRUE;
-	philo->time_to_die = get_next_die(table);
+	philo->time_to_die = get_next_die(table) - table->time_eat;
 	philo->table = table;
 	if (pthread_create(&thread_id, NULL, philo_behaviour, philo) != 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 10:51:28 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:27:59 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	check_nb_philosophers(t_table *table)
 static int	create_forks(t_table *table)
 {
 	int				index;
-	pthread_mutex_t	*tmp;
 
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->number_philosopers);
 	if (!table->forks)
@@ -31,11 +30,7 @@ static int	create_forks(t_table *table)
 	index = 0;
 	while (index < table->number_philosopers)
 	{
-		tmp = malloc(sizeof(pthread_mutex_t));
-		if (!tmp)
-			return (FALSE);
-		pthread_mutex_init(tmp, NULL);
-		table->forks[index] = *tmp;
+		pthread_mutex_init(&table->forks[index], NULL);
 		index++;
 	}
 	return (TRUE);
@@ -43,22 +38,30 @@ static int	create_forks(t_table *table)
 
 void	free_table(t_table *table)
 {
+	int		i;
+	t_philo	*p;
+
+	i = 0;
+	while (i < table->number_philosopers)
+	{
+		p = table->philoshophers[i];
+		pthread_join(p->thread, NULL);
+		pthread_mutex_destroy(&p->lock);
+		pthread_mutex_destroy(&table->forks[i]);
+		free(table->philoshophers[i]);
+		i++;
+	}
+	free(table->philoshophers);
+	free(table->forks);
+	pthread_mutex_destroy(&table->write_lock);
+	pthread_mutex_destroy(&table->checker);
 	free(table);
 }
 
 static void	create_mutex(t_table *table)
 {
-	table->write_lock = malloc(sizeof(pthread_mutex_t));
-	if (!table->write_lock)
-		free_table(table);
-	table->checker = malloc(sizeof(pthread_mutex_t));
-	if (!table->checker)
-	{
-		free(table->write_lock);
-		free_table(table);
-	}
-	pthread_mutex_init(table->write_lock, NULL);
-	pthread_mutex_init(table->checker, NULL);
+	pthread_mutex_init(&table->write_lock, NULL);
+	pthread_mutex_init(&table->checker, NULL);
 }
 
 t_table	*create_table(int argc, char **argv)

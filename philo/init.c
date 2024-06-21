@@ -6,7 +6,7 @@
 /*   By: gblanca <gblanca-@student.42.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 10:51:09 by gblanca-          #+#    #+#             */
-/*   Updated: 2024/06/21 12:27:59 by gblanca          ###   ########.fr       */
+/*   Updated: 2024/06/21 12:47:45 by gblanca          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_table(t_table *table)
 	while (i < table->number_philosopers)
 	{
 		p = table->philoshophers[i];
-		pthread_join(p->thread, NULL);
+	//	pthread_join(p->thread, NULL);
 		pthread_mutex_destroy(&p->lock);
 		pthread_mutex_destroy(&table->forks[i]);
 		free(table->philoshophers[i]);
@@ -75,18 +75,33 @@ t_table	*create_table(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	table->number_philosopers = ft_atoi(argv[1]);
-	if (table->number_philosopers == 0 || table->number_philosopers > 200)
+	if (table->number_philosopers <= 0 || table->number_philosopers > 200)
 		check_nb_philosophers(table);
 	table->time_to_die = ft_atoi(argv[2]);
 	table->time_eat = ft_atoi(argv[3]);
 	table->time_sleep = ft_atoi(argv[4]);
+	if (table->time_to_die <= 0 || table->time_eat <= 0
+		|| table->time_sleep <= 0)
+	{
+		printf("%sError setting parameters\n%s", RED, RESET);
+		free(table);
+		return (NULL);
+	}
 	table->nb_of_eat_philo = 0;
 	table->philoshophers = NULL;
 	table->simulation_active = TRUE;
 	table->can_start = FALSE;
 	table->start_time = get_time();
 	if (argc == 6)
+	{
 		table->nb_of_eat_philo = ft_atoi(argv[5]);
+		if (table->nb_of_eat_philo <= 0)
+		{
+			printf("%sError setting parameters\n%s", RED, RESET);
+			free(table);
+			return (NULL);
+		}
+	}
 	create_mutex(table);
 	create_forks(table);
 	create_philosophers(table);
